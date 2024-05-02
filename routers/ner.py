@@ -1,5 +1,7 @@
 from fastapi import APIRouter
 from pydantic import BaseModel
+from fastapi.encoders import jsonable_encoder
+from fastapi.responses import JSONResponse
 from model_server.ner import NER
 
 router = APIRouter(
@@ -14,7 +16,8 @@ class NerInput(BaseModel):
     text: str
 
 @router.post("/entities")
-async def recognize_entities(input_data: NerInput):
+async def named_entity_resolution(input_data: NerInput) -> JSONResponse:
     text = input_data.text
-    result = await ner.ner(text)
-    return result
+    response = await ner.ner(text)
+    print('response', response)
+    return JSONResponse(content=response)

@@ -14,8 +14,9 @@ class Sentiment:
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.model = AutoModelForSequenceClassification.from_pretrained(load_dir).to(self.device)
         self.tokenizer = AutoTokenizer.from_pretrained(load_dir)
-        self.generator = pipeline("sentiment-analysis", model=self.model, tokenizer=self.tokenizer, device=self.device)
+        self.generator = pipeline("text-classification", model=self.model, tokenizer=self.tokenizer, device=self.device)
         
     async def sentiment(self, text):
-        sentiment = self.generator(text)
-        return sentiment
+        result = self.generator(text)
+        print(result)
+        return result

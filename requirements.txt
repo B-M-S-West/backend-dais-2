@@ -10,3 +10,4 @@ pydub
 python-dotenv
 python-multipart
 sacremoses
+scipy

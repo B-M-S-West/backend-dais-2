@@ -16,6 +16,16 @@ class NER:
         self.tokenizer = AutoTokenizer.from_pretrained(load_dir)
         self.generator = pipeline("ner", model=self.model, tokenizer=self.tokenizer, device=self.device, aggregation_strategy="simple")
         
-    async def ner(self, text):
-        ner = self.generator(text)
-        return ner
+    async def ner(self, text) -> list[dict[str, str]]:
+        ner_result = self.generator(text)
+        extracted_entities = []
+        for entity in ner_result:
+            extracted_entity = {
+                'entity_group': entity['entity_group'],
+                'score': str(entity['score']),
+                'word': entity['word'],
+                'start': str(entity['start']),
+                'end': str(entity['end'])
+            }
+            extracted_entities.append(extracted_entity)
+        return extracted_entities
