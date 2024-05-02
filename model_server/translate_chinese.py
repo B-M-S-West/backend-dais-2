@@ -21,6 +21,5 @@ class Translate_zh_to_en:
         
 
     async def translate(self, text):
-        # Translate text using pipeline
         translated_text = self.generator(text)
         return translated_text

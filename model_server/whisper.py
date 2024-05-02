@@ -31,11 +31,9 @@ class Audio:
                                   )
         
     async def transcribe(self, audio):
-        # Translate text using pipeline
         transcription = self.generator(audio)
         return transcription
     
     async def translate(self, audio):
-        # Translate text using pipeline
         transcription = self.generator(audio, generate_kwargs={"task": "translate"})
         return transcription
