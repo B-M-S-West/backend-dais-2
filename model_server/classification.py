@@ -1,7 +1,7 @@
 import os
-from transformers import pipeline, AutoTokenizer, BartForSequenceClassification
 import torch
 from dotenv import load_dotenv
+from transformers import pipeline, AutoTokenizer, BartForSequenceClassification
 
 load_dotenv()
 
@@ -9,10 +9,7 @@ MODELS_DIRECTORY = os.getenv("MODELS_DIRECTORY", "/models")
 MODEL_NAME = os.getenv("CLASSIFICATION_MODEL_NAME", "theme-classification")
 
 class Classification:
-    def __init__(self, args):
-        self.initialize(args)
-
-    def initialize(self, args):
+    def __init__(self):
         load_dir = os.path.join(MODELS_DIRECTORY, MODEL_NAME)
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.model = BartForSequenceClassification.from_pretrained(load_dir).to(self.device)

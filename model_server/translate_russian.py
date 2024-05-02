@@ -1,7 +1,7 @@
 import os
-from transformers import pipeline, MarianMTModel, MarianTokenizer
 import torch
 from dotenv import load_dotenv
+from transformers import pipeline, MarianMTModel, MarianTokenizer
 
 load_dotenv()
 
@@ -9,10 +9,7 @@ MODELS_DIRECTORY = os.getenv("MODELS_DIRECTORY", "/models")
 MODEL_NAME = os.getenv("RU_EN_MODEL_NAME", "opus-mt-ru-en")
 
 class Translate_ru_to_en:
-    def __init__(self, args):
-        self.initialize(args)
-
-    def initialize(self, args):
+    def __init__(self):
         load_dir = os.path.join(MODELS_DIRECTORY, MODEL_NAME)
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.model = MarianMTModel.from_pretrained(load_dir).to(self.device)
