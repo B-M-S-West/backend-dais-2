@@ -9,16 +9,16 @@ router = APIRouter(
     responses={404: {"description": "Not found"}},
 )
 
-audio = Audio()
+audio_model = Audio()
 
 
 @router.post("/transcribe")
 async def transcribe_audio_file(file: UploadFile = File(...)):
     try:
         # Read the audio file
-        audio_data = await file.read()
+        audio_bytes = await file.read()
         # Pass the audio data to the Whisper model
-        result = transcribe_audio(audio_data)
+        result = await transcribe_audio(audio_bytes)
         return result
     except Exception as e:
         return {"error": str(e)}
@@ -28,9 +28,9 @@ async def transcribe_audio_file(file: UploadFile = File(...)):
 async def translate_audio_file(file: UploadFile = File(...)):
     try:
         # Read the audio file
-        audio_data = await file.read()
+        audio_bytes = await file.read()
         # Pass the audio data to the Whisper model
-        result = translate_audio(audio_data)
+        result = await translate_audio(audio_bytes)
         return result
     except Exception as e:
         return {"error": str(e)}
@@ -46,7 +46,7 @@ def convert_sample_rate(audio_bytes):
     return audio
 
 
-def transcribe_audio(audio_bytes):
+async def transcribe_audio(audio_bytes):
     # Convert the audio bytes to the correct sample rate
     audio = convert_sample_rate(audio_bytes)
     # Save the converted audio file to a temporary file
@@ -54,11 +54,11 @@ def transcribe_audio(audio_bytes):
     audio.export(temp_file, format="mp3")
 
     # Run the transcription pipeline
-    result = audio.transcribe(temp_file)
+    result = await audio_model.transcribe(temp_file)
     return result["text"]
 
 
-def translate_audio(audio_bytes):
+async def translate_audio(audio_bytes):
     # Convert the audio bytes to the correct sample rate
     audio = convert_sample_rate(audio_bytes)
     # Save the converted audio file to a temporary file
@@ -66,5 +66,5 @@ def translate_audio(audio_bytes):
     audio.export(temp_file, format="mp3")
 
     # Run the translation pipeline
-    result = audio.translate(temp_file)
+    result = await audio_model.translate(temp_file)
     return result["translation_text"]
