@@ -4,7 +4,7 @@ from model_server.sentiment import Sentiment
 
 router = APIRouter(
     prefix="/sentiment",
-    tags=["ner"],
+    tags=["Sentiment"],
     responses={404: {"description": "Not found"}},
 )
 
@@ -14,7 +14,7 @@ class SentimentInput(BaseModel):
     text: str
 
 @router.post("/sentiment")
-async def recognize_entities(input_data: SentimentInput):
+async def analyse_sentiment(input_data: SentimentInput):
     text = input_data.text
     result = await sentiment.sentiment(text)
     return result

@@ -1,10 +1,11 @@
-from fastapi import APIRouter, UploadFile
+from fastapi import APIRouter, UploadFile, FastAPI
 from minio import Minio
 from dotenv import load_dotenv
 from typing import List
 import os
 import asyncio
 from aiohttp import ClientError
+from contextlib import asynccontextmanager
 
 router = APIRouter(
     prefix="/minio",
@@ -29,22 +30,18 @@ client = Minio(
     secure=False
 )
 
-async def ensure_bucket_exists():
+def ensure_bucket_exists():
     # Check if the bucket exists
-    if not await client.bucket_exists(bucket):
+    if not client.bucket_exists(bucket):
         # If the bucket doesn't exist, create it
-        await client.make_bucket(bucket)
+        client.make_bucket(bucket)
 
-# Asynchronously ensure bucket existence on program startup
-async def startup_event():
-    await ensure_bucket_exists()
-
-
-@router.lifespan("startup")
-async def startup():
-    await startup_event()
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    ensure_bucket_exists()
     yield
 
+@router.post("/upload-file")
 async def upload_file(file: UploadFile):
     try:
         await client.put_object(
@@ -57,10 +54,12 @@ async def upload_file(file: UploadFile):
         # Handle MinIO client errors
         print(f"Failed to upload file {file.filename}: {e}")
 
+@router.post("/upload-files")
 async def upload_files(files: List[UploadFile]):
     tasks = [upload_file(file) for file in files]
     await asyncio.gather(*tasks)
 
+@router.post("/upload-folder")
 async def upload_folder(folder_path: str):
     tasks = []
     for root, dirs, files in os.walk(folder_path):

@@ -23,9 +23,9 @@ async def classify_endpoint(input_data: ClassificationInput):
     return result
 
 @router.post("/classify_multi")
-async def classify_endpoint(input_data: ClassificationInput):
+async def classify_endpoint_multi(input_data: ClassificationInput):
     text = input_data.text
     themes = input_data.themes
     # Assuming that your `classify` function takes text and themes as arguments
-    result = await classifier.classify(text, themes)
+    result = await classifier.classify_multi(text, themes)
     return result

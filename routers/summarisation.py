@@ -1,10 +1,9 @@
-from fastapi import APIRouter, Request
-from pydantic import BaseModel
+from fastapi import APIRouter
 from model_server.summarisation import Summarisation
 
 router = APIRouter(
     prefix="/summarise",
-    tags=["ner"],
+    tags=["Summarisation"],
     responses={404: {"description": "Not found"}},
 )
 

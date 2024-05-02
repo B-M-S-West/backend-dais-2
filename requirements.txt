@@ -8,3 +8,5 @@ tensorflow
 sentencepiece
 pydub
 python-dotenv
+python-multipart
+sacremoses
