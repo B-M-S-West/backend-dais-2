@@ -28,9 +28,9 @@ class Audio:
                                   )
         
     async def transcribe(self, audio):
-        transcription = self.generator(audio, generate_kwargs={"language": "english"})
+        transcription = self.generator(audio)
         return transcription
     
     async def translate(self, audio):
-        transcription = self.generator(audio, generate_kwargs={"task": "translate"})
-        return transcription
+        translation = self.generator(audio, generate_kwargs={"task":"translate"})
+        return translation

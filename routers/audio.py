@@ -67,4 +67,4 @@ async def translate_audio(audio_bytes):
 
     # Run the translation pipeline
     result = await audio_model.translate(temp_file)
-    return result["translation_text"]
+    return result["text"]
