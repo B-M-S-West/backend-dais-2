@@ -30,7 +30,7 @@ client = Minio(
     secure=False
 )
 
-def ensure_bucket_exists():
+async def ensure_bucket_exists():
     # Check if the bucket exists
     if not client.bucket_exists(bucket):
         # If the bucket doesn't exist, create it
@@ -38,17 +38,17 @@ def ensure_bucket_exists():
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    ensure_bucket_exists()
+    await ensure_bucket_exists()
     yield
 
 @router.post("/upload-file")
 async def upload_file(file: UploadFile):
     try:
-        await client.put_object(
+            client.put_object(
             bucket_name=bucket,
             object_name=file.filename,
-            data=file.file,
-            length=file.file.__sizeof__(),
+            data = file.file,
+            length = file.file.__sizeof__(),
         )
     except ClientError as e:
         # Handle MinIO client errors
