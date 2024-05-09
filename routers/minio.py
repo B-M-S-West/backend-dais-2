@@ -65,6 +65,6 @@ async def upload_folder(folder_path: str):
     for root, dirs, files in os.walk(folder_path):
         for file_name in files:
             file_path = os.path.join(root, file_name)
-            async with open(file_path, 'rb') as file:
+            with open(file_path, 'rb') as file:
                 tasks.append(upload_file(UploadFile(file=file, filename=file_name)))
     await asyncio.gather(*tasks)

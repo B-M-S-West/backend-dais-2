@@ -13,3 +13,4 @@ sacremoses
 scipy
 soundfile 
 librosa
+aiohttp
