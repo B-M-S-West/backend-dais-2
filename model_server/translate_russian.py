@@ -5,7 +5,7 @@ from transformers import pipeline, MarianMTModel, MarianTokenizer
 
 load_dotenv()
 
-MODELS_DIRECTORY = os.getenv("MODELS_DIRECTORY", "/models")
+MODELS_DIRECTORY = os.getenv("MODELS_DIRECTORY", "models")
 MODEL_NAME = os.getenv("RU_EN_MODEL_NAME", "opus-mt-ru-en")
 
 class Translate_ru_to_en:
@@ -15,7 +15,7 @@ class Translate_ru_to_en:
         self.model = MarianMTModel.from_pretrained(load_dir).to(self.device)
         self.tokenizer = MarianTokenizer.from_pretrained(load_dir)
         self.generator = pipeline("translation_ru_to_en", model=self.model, tokenizer=self.tokenizer, device=self.device)
-        
+        print(f"{MODEL_NAME} is ready")
 
     async def translate(self, text):
         translated_text = self.generator(text)

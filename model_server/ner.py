@@ -5,7 +5,7 @@ from transformers import pipeline, AutoTokenizer, AutoModelForTokenClassificatio
 
 load_dotenv()
 
-MODELS_DIRECTORY = os.getenv("MODELS_DIRECTORY", "/models")
+MODELS_DIRECTORY = os.getenv("MODELS_DIRECTORY", "models")
 MODEL_NAME = os.getenv("NER_MODEL_NAME", "bert-base-NER")
 
 class NER:
@@ -15,7 +15,8 @@ class NER:
         self.model = AutoModelForTokenClassification.from_pretrained(load_dir).to(self.device)
         self.tokenizer = AutoTokenizer.from_pretrained(load_dir)
         self.generator = pipeline("ner", model=self.model, tokenizer=self.tokenizer, device=self.device, aggregation_strategy="simple")
-        
+        print(f"{MODEL_NAME} is ready")
+
     async def ner(self, text) -> list[dict[str, str]]:
         ner_result = self.generator(text)
         extracted_entities = []

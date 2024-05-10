@@ -5,7 +5,7 @@ from transformers import pipeline, AutoModelForSpeechSeq2Seq, AutoProcessor
 
 load_dotenv()
 
-MODELS_DIRECTORY = os.getenv("MODELS_DIRECTORY", "/models")
+MODELS_DIRECTORY = os.getenv("MODELS_DIRECTORY", "models")
 MODEL_NAME = os.getenv("AUDIO_MODEL_NAME", "whisper-large-v3")
 
 class Audio:
@@ -26,7 +26,8 @@ class Audio:
                                   torch_dtype=self.torch_dtype,
                                   device=self.device
                                   )
-        
+        print(f"{MODEL_NAME} is ready")
+
     async def transcribe(self, audio):
         transcription = self.generator(audio)
         return transcription

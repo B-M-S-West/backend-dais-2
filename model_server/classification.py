@@ -5,7 +5,7 @@ from transformers import pipeline, AutoTokenizer, BartForSequenceClassification
 
 load_dotenv()
 
-MODELS_DIRECTORY = os.getenv("MODELS_DIRECTORY", "/models")
+MODELS_DIRECTORY = os.getenv("MODELS_DIRECTORY", "models")
 MODEL_NAME = os.getenv("CLASSIFICATION_MODEL_NAME", "theme-classification")
 
 class Classification:
@@ -15,6 +15,7 @@ class Classification:
         self.model = BartForSequenceClassification.from_pretrained(load_dir).to(self.device)
         self.tokenizer = AutoTokenizer.from_pretrained(load_dir)
         self.generator = pipeline("zero-shot-classification", model=self.model, tokenizer=self.tokenizer, device=self.device)
+        print(f"{MODEL_NAME} is ready")
         
     async def classify(self, text, themes):
         classification = self.generator(text, themes)

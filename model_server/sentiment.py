@@ -5,7 +5,7 @@ from transformers import pipeline, AutoTokenizer, AutoModelForSequenceClassifica
 
 load_dotenv()
 
-MODELS_DIRECTORY = os.getenv("MODELS_DIRECTORY", "/models")
+MODELS_DIRECTORY = os.getenv("MODELS_DIRECTORY", "models")
 MODEL_NAME = os.getenv("SENTIMENT_MODEL_NAME", "twitter-roberta-base-sentiment")
 
 class Sentiment:
@@ -15,7 +15,8 @@ class Sentiment:
         self.model = AutoModelForSequenceClassification.from_pretrained(load_dir).to(self.device)
         self.tokenizer = AutoTokenizer.from_pretrained(load_dir)
         self.generator = pipeline("text-classification", model=self.model, tokenizer=self.tokenizer, device=self.device)
-        
+        print(f"{MODEL_NAME} is ready")
+
     async def sentiment(self, text):
         result = self.generator(text)
         print(result)
