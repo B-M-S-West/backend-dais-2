@@ -4,7 +4,6 @@ torch
 whisper
 transformers
 minio
-tensorflow
 sentencepiece
 pydub
 python-dotenv

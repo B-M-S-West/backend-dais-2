@@ -2,7 +2,6 @@ import warnings
 from fastapi import FastAPI
 import uvicorn
 from routers import audio, classification, minio, ner, sentiment, summarisation, translate
-from routers.minio import lifespan
 
 warnings.filterwarnings("ignore")
 
@@ -11,7 +10,6 @@ app = FastAPI(
     title="DAIS API",
     description="API for DAIS Models",
     version="1.0.2",
-    lifespan=lifespan
 )
 
 @app.get("/")

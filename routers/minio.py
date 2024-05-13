@@ -5,7 +5,6 @@ from typing import List
 import os
 import asyncio
 from aiohttp import ClientError
-from contextlib import asynccontextmanager
 
 router = APIRouter(
     prefix="/minio",
@@ -29,17 +28,6 @@ client = Minio(
     secret_key=minio_secret_key,
     secure=False
 )
-
-async def ensure_bucket_exists():
-    # Check if the bucket exists
-    if not client.bucket_exists(bucket):
-        # If the bucket doesn't exist, create it
-        client.make_bucket(bucket)
-
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    await ensure_bucket_exists()
-    yield
 
 @router.post("/upload-file")
 async def upload_file(file: UploadFile):
