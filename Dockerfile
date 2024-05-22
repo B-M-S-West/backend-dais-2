@@ -19,6 +19,6 @@ EXPOSE 5000
 # Run main.py when the container launches
 CMD ["python", "./main.py"]
 
-# docker build -t backend-dais:latest .
+# docker build -t backend-dais-2:latest .
 # don't forget the full stop above for it to actually build it.
 # check model locations before creating. "models/model_name" no ../ needed. Should be needed with .env

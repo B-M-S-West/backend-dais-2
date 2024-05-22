@@ -32,11 +32,11 @@ client = Minio(
 @router.post("/upload-file")
 async def upload_file(file: UploadFile):
     try:
-            client.put_object(
+        client.put_object(
             bucket_name=bucket,
             object_name=file.filename,
             data = file.file,
-            length = file.file.__sizeof__(),
+            length = file.size
         )
     except ClientError as e:
         # Handle MinIO client errors

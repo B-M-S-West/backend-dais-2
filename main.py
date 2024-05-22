@@ -2,6 +2,7 @@ import warnings
 from fastapi import FastAPI
 import uvicorn
 from routers import audio, classification, minio, ner, sentiment, summarisation, translate
+from prometheus_fastapi_instrumentator import Instrumentator
 
 warnings.filterwarnings("ignore")
 
@@ -23,6 +24,8 @@ app.include_router(ner.router)
 app.include_router(sentiment.router)
 app.include_router(summarisation.router)
 app.include_router(translate.router)
+
+Instrumentator().instrument(app).expose(app)
 
 if __name__ == '__main__':
     uvicorn.run("main:app", workers=0, host="0.0.0.0", port=5000)

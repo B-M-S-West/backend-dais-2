@@ -14,3 +14,4 @@ soundfile
 librosa
 aiohttp
 ffmpeg-python
+prometheus-fastapi-instrumentator
